@@ -1,28 +1,76 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TodoHeader></TodoHeader>
+    <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
+    <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem"></TodoList>
+    <TodoFooter v-on:clearAll="clearAllItems"></TodoFooter>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TodoHeader from './components/TodoHeader.vue'
+import TodoFooter from './components/TodoFooter.vue'
+import TodoInput from './components/TodoInput.vue'
+import TodoList from './components/TodoList.vue'
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    'TodoHeader': TodoHeader,
+    'TodoFooter': TodoFooter,
+    'TodoInput': TodoInput,
+    'TodoList': TodoList,
+  },
+  data: function() {
+    return {
+      todoItems: [],
+    }
+  },
+  methods: {
+    addOneItem: function (todoItem) {
+      let obj = {completed: false, item: todoItem};
+      localStorage.setItem(todoItem, JSON.stringify(obj));
+      this.todoItems.push(obj)
+    },
+    removeOneItem: function(todoItem, index) {
+      this.todoItems.splice(index, 1);
+      localStorage.removeItem(todoItem.item);
+    },
+    toggleOneItem: function(todoItem, index) {
+      //todoItem.completed = !todoItem.completed;
+      this.todoItems[index].completed = !this.todoItems[index].completed
+      localStorage.removeItem(this.todoItems[index]);
+      localStorage.setItem(this.todoItems[index], JSON.stringify(this.todoItems[index]));
+    },
+    clearAllItems: function () {
+      localStorage.clear();
+      this.todoItems = [];
+    }
+  },
+  created: function() {
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
+          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        }
+      }
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background-color: #F6F6F8;
+}
+input {
+  border-style: groove;
+  width: 200px;
+}
+button {
+  border-style: groove;
+}
+.shadow {
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03)
 }
 </style>
