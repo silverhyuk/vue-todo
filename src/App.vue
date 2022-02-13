@@ -20,32 +20,6 @@ export default {
     TodoInput,
     TodoList,
   },
-  data() {
-    return {
-      todoItems: [],
-    }
-  },
-  methods: {
-    /*addOneItem(todoItem) {
-      let obj = {completed: false, item: todoItem};
-      localStorage.setItem(todoItem, JSON.stringify(obj));
-      this.todoItems.push(obj)
-    },
-    removeOneItem(todoItem, index) {
-      this.todoItems.splice(index, 1);
-      localStorage.removeItem(todoItem.item);
-    },
-    toggleOneItem(todoItem, index) {
-      //todoItem.completed = !todoItem.completed;
-      this.todoItems[index].completed = !this.todoItems[index].completed
-      localStorage.removeItem(this.todoItems[index]);
-      localStorage.setItem(this.todoItems[index], JSON.stringify(this.todoItems[index]));
-    },
-    clearAllItems() {
-      localStorage.clear();
-      this.todoItems = [];
-    }*/
-  },
 }
 </script>
 
